@@ -1,0 +1,10 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:ap-southeast-1:211125364313:task-definition/etd-app2:1"
+        #TaskDefinition: <TASK_DEFINITION>
+        LoadBalancerInfo:
+          ContainerName: "container-app2"
+          ContainerPort: 8080
