@@ -21,6 +21,11 @@ public class Api {
 
     private final BaseRest baseRest;
 
+    @GetMapping("/health-check")
+    public void health(){
+        return;
+    }
+
     @GetMapping("/test")
     public String get(){
 
