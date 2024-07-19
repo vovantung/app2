@@ -1,5 +1,6 @@
 package com.example.app2;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.example.app2.exception.NotFoundException;
 import com.example.app2.exception.TxException;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/gateway")
+@RequestMapping("/app2")
 public class Api {
     @Value("${dns.name.app1}")
     private String dnsApp1;
 
     private final BaseRest baseRest;
 
-    @GetMapping("/get")
+    @GetMapping("/test")
     public String get(){
+
+        if (StringUtil.isNullOrEmpty(dnsApp1)){
+            return "dns null or empty";
+        }
 
         var responseEntity = baseRest.getForEntity(dnsApp1 + "/health-check", String.class);
 
