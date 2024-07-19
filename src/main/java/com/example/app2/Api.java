@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/app2")
 public class Api {
-    @Value("${dns.name.app1}")
+    @Value("${dns.app1}")
     private String dnsApp1;
 
     private final BaseRest baseRest;
