@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:ecs:ap-southeast-1:211125364313:task-definition/etd-app2:6"
+        TaskDefinition: "arn:aws:ecs:ap-southeast-1:211125364313:task-definition/etd-app2:7"
         #TaskDefinition: <TASK_DEFINITION>
         LoadBalancerInfo:
           ContainerName: "container-app2"
