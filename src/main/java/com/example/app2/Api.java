@@ -43,7 +43,7 @@ public class Api {
             throw new TxException("An error occurred while processing your request");
         }
 
-        return "Test: " + responseEntity.getBody();
+        return "Gateway: " + responseEntity.getBody();
 
     }
 
