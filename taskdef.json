@@ -1,8 +1,8 @@
 {
   "containerDefinitions": [
     {
-      "name": "container-app1",
-      "image": "211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app1:latest",
+      "name": "container-app2",
+      "image": "211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest",
       "memory": 128,
       "cpu": 100,
       "essential": true,
