@@ -35,8 +35,7 @@ pipeline {
         stage('Deploy to Minikube') {
             steps {
                 sh '''
-                    kubectl delete deployment2 --all
-                    kubectl delete service2 --all
+              
                     kubectl apply -f deployment2.yaml
                     kubectl apply -f service2.yaml
                 '''
