@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy to Minikube') {
             steps {
                 sh '''
-              
+
                     kubectl apply -f deployment2.yaml
                     kubectl apply -f service2.yaml
                 '''

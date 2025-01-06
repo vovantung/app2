@@ -26,7 +26,7 @@ public class Api {
         return;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/call")
     public String get(){
 
         if (StringUtil.isNullOrEmpty(dnsApp1)){
