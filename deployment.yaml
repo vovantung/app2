@@ -14,9 +14,11 @@ spec:
     spec:
       containers:
         - name: app2
-          image:  211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest
+          image: 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest
           ports:
             - containerPort: 8080
+      imagePullSecrets:
+        - name: ecr-secret
 ---
 apiVersion: v1
 kind: Service
