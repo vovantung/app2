@@ -28,16 +28,17 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh '''
-                docker build -t app2:1.0 .
+                docker build -t app2 .
+                docker tag app2:latest 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest
+                aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com
+                docker push 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest
                 '''
             }
         }
         stage('Deploy to Minikube') {
             steps {
                 sh '''
-
-                    kubectl apply -f deployment2.yaml
-                    kubectl apply -f service2.yaml
+                    kubectl apply -f deployment.yaml
                 '''
             }
         }
