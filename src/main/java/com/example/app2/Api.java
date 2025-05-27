@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/app2")
 public class Api {
     @Value("${dns.app1}")
     private String dnsApp1;
@@ -26,14 +25,14 @@ public class Api {
         return;
     }
 
-    @GetMapping("/call")
+    @GetMapping("/test2")
     public String get(){
 
         if (StringUtil.isNullOrEmpty(dnsApp1)){
             return "dns null or empty";
         }
 
-        var responseEntity = baseRest.getForEntity(dnsApp1 + "/health-check", String.class);
+        var responseEntity = baseRest.getForEntity(dnsApp1 + "/test1", String.class);
 
         if (responseEntity.getStatusCode() == HttpStatus.NOT_FOUND) {
 //            log.error(String.format("No movie is found with Id %s", Id));
