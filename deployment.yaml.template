@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app2
+  labels:
+    app: app2
 spec:
   replicas: 1
   selector:
@@ -14,7 +16,8 @@ spec:
     spec:
       containers:
         - name: app2
-          image: 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:${BUILD_NUMBER}
+          image: 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:__VERSION__
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
       imagePullSecrets:
@@ -31,6 +34,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+  type: ClusterIP
 
 ---
 apiVersion: v1
@@ -40,9 +44,8 @@ metadata:
 spec:
   selector:
     app: app2
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-      nodePort: 30002 # Cổng tùy chọn (30000-32767)
   type: NodePort
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30002

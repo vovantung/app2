@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
             KUBECONFIG = '/var/jenkins_home/.kube/config'
-        }
+    }
 
     stages {
         stage('Clone') {
@@ -13,28 +13,57 @@ pipeline {
 //                 git status
 //                 '''
 //             }
-                steps{
+
+            steps{
                 git branch: 'main', url: 'https://github.com/vovantung/app2.git'
-                }
+            }
         }
+
         stage('Build app') {
             steps {
                sh '''
                    mvn clean install
                '''
-                  }
+            }
+        }
+
+        stage('Get App Version') {
+            steps {
+                script {
+                    // Bước 1: Ghi version ra file, loại bỏ ANSI escape bằng sed
+                    sh '''
+                         mvn -B -Dstyle.color=never help:evaluate -Dexpression=project.version -q -DforceStdout \
+                        | sed -E 's/\\x1B\\[[0-9;]*[a-zA-Z]//g' > version.txt
+                    '''
+
+                    // Bước 2: Đọc file và tiếp tục làm sạch từ Groovy
+                    def rawVersion = readFile('version.txt').trim()
+                    // echo "Raw Version: >>>${rawVersion}<<<"
+                    env.APP_VERSION = rawVersion
+                }
+            }
         }
 
         stage('Build Docker Image') {
             steps {
                 sh '''
-                docker build -t app2 .
-                docker tag app2:latest 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest
+                docker build -t app2:${APP_VERSION} .
+                docker tag app2:${APP_VERSION} 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:${APP_VERSION}
                 aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com
-                docker push 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:latest
+                docker push 211125364313.dkr.ecr.ap-southeast-1.amazonaws.com/app2:${APP_VERSION}
                 '''
             }
         }
+
+        stage('Prepare Deployment YAML') {
+            steps {
+                sh '''
+                    cp deployment.yaml.template deployment.yaml
+                    sed -i "s/__VERSION__/${APP_VERSION}/g" deployment.yaml
+                '''
+            }
+        }
+
         stage('Deploy to Minikube') {
             steps {
                 sh '''
